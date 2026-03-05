@@ -1,0 +1,94 @@
+# 敏感信息 - 必须排除
+config.ini
+config_*.ini
+*.log
+logs/
+ml_data/
+.env
+.env.local
+.env.*.local
+
+# API密钥和密码
+*_key.txt
+*_secret.txt
+*_password.txt
+
+# 数据文件
+*.csv
+*.json
+*.pkl
+*.h5
+*.pth
+*.model
+*.data
+*.index
+
+# Python生成文件
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# 虚拟环境
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.code-workspace
+
+# 编辑器文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 回测结果
+backtest_results/
+plots/
+charts/
+
+# 日志和报告
+reports/
+*.html
+*.pdf
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+*.temp
+
+# 系统文件
+*.pid
+*.lock
+*.sock
+
+# 测试覆盖率
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
