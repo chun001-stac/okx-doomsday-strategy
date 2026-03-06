@@ -1,0 +1,86 @@
+# Logs
+*.log
+logs/
+cron_report.log
+monitor_service.log
+optimized_strategy.log
+strategy_*.log
+
+# Data files
+*.csv
+*.json
+*.png
+*.txt
+btc_2h_data.csv
+btc_2h_summary.txt
+grid_search_results.csv
+aggressive_optimization_*.csv
+evomap_asset_*.json
+evomap_heartbeat.log
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment and configuration
+config.ini
+config_*.ini
+config.json
+config_fixed_v2.ini
+config_optimized.ini
+config_test.ini
+strategy_pid.txt
+monitor_pid.txt
+optimized_pid.txt
+strategy.pid
+
+# Secrets
+*.key
+*.pem
+*.p12
+*.crt
+
+# Temporary files
+*.tmp
+*.temp
+
+# Large files
+*.zip
+*.tar.gz
+
+# Directories
+btc_reports/
+ml_data/
+ml_data_test/
+memory/
+.pi/
+.venv/
+
+# Specific files to ignore
+current_report.txt
+position_report.txt
+feishu_message.txt
+hourly_position_report.py
+monitor_service.py
+send_position_report.py
+check_status.sh
+start_strategy.sh
+start_optimized.sh
+start_with_monitoring.sh
+status_check.sh
+hourly_monitor.sh
+
+# Keep these files in git (important strategy files)
+!okx_doomsday_fixed.py
+!okx_doomsday_optimized.py
+!okx_doomsday_optimized_v2.py
+!okx_doomsday_optimized_v2_ml_integrated.py
+!okx_doomsday_trader.py
+!bybit_doomsday_sim.py

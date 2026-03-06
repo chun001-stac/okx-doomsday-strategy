@@ -1,0 +1,88 @@
+[OKX]
+api_key = 1d9832a1-030e-49a9-90a7-29697d9c4980
+api_secret = 34A04573377BFBE85F2CE7F204AD4AC3
+api_password = Lqc1234567890@
+
+[Trading]
+symbol = ETH-USDT-SWAP
+leverage = 10
+margin_mode = cross
+base_position_size_pct = 0.3
+max_position_size_pct = 0.3
+min_position_size_pct = 0.05
+atr_position_adjust = true
+max_daily_trades = 30
+max_daily_loss_pct = 0.25
+max_total_loss_pct = 0.40
+cooling_period_minutes = 2
+
+[Strategy]
+timeframe = 5m
+momentum_period = 5
+momentum_threshold_long = 0.005
+momentum_threshold_short = -0.005
+rsi_period = 7
+rsi_overbought = 75
+rsi_oversold = 25
+short_bias = 0.75
+min_volume_ratio = 1.2
+max_atr_pct = 0.05
+trend_confirmation_period = 1
+
+[Risk]
+base_stoploss_pct = 0.05
+base_takeprofit_pct = 0.09
+atr_stoploss_multiplier = 1.5
+atr_takeprofit_multiplier = 2.0
+trailing_stop_pct = 0.03
+
+[Optimization]
+# 调优结果 (评分: 62.4, 收益: 9.18%)
+signal_strength_threshold = 22
+signal_strength_weights = {"momentum": 0.15, "volume": 0.10, "rsi": 0.15, "trend": 0.20, "bb": 0.10, "volatility": 0.10, "multi_timeframe": 0.10, "sentiment": 0.10}
+position_size_by_strength = true
+strength_to_position_power = 1.5
+multi_timeframe_confirmation = true
+higher_timeframe = 1h
+higher_timeframe_weight = 0.3
+stop_loss_volatility_adjust = true
+stop_loss_trend_adjust = true
+volatility_stop_multiplier = 2.0
+trend_stop_multiplier = 1.5
+ml_signal_scoring = true
+ml_model_path = 
+ml_data_collection = true
+ml_data_dir = ml_data
+ml_min_samples = 1000
+ml_retrain_days = 7
+
+[ML]
+# 机器学习数据收集设置
+data_collection_enabled = true
+collect_trades = true
+collect_signals = true
+collect_market_data = true
+features_extraction_enabled = true
+min_samples_for_training = 1000
+retrain_interval_days = 7
+model_type = xgboost  # xgboost, random_forest, neural_network
+feature_importance_threshold = 0.05
+validation_split = 0.2
+early_stopping_rounds = 50
+
+# 数据保存设置
+save_raw_data = true
+save_features = true
+save_labels = true
+compress_data = false
+backup_days = 30
+
+[System]
+check_interval = 60
+enable_trading = true
+testnet = true
+enable_logging = true
+cache_indicators = false
+vps_location = HongKong
+td_mode = cross
+use_simple_orders = true
