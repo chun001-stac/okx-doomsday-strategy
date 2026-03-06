@@ -1,0 +1,72 @@
+#!/bin/bash
+# 策略守护进程脚本
+# 自动重启策略进程，确保持续运行
+
+WORKDIR="/root/.openclaw/workspace/freqtrade_workspace"
+LOG_DIR="$WORKDIR/logs"
+STRATEGY_PID_FILE="$WORKDIR/strategy_pid.txt"
+MONITOR_LOG="$LOG_DIR/strategy_monitor.log"
+STRATEGY_SCRIPT="okx_doomsday_fixed.py"
+
+# 创建日志目录
+mkdir -p "$LOG_DIR"
+
+# 日志函数
+log_monitor() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$MONITOR_LOG"
+}
+
+# 检查策略进程是否运行
+check_strategy() {
+    if [ -f "$STRATEGY_PID_FILE" ]; then
+        PID=$(cat "$STRATEGY_PID_FILE")
+        if ps -p "$PID" > /dev/null 2>&1; then
+            return 0  # 进程存在
+        else
+            log_monitor "进程 $PID 不存在，策略可能已停止"
+            return 1
+        fi
+    else
+        log_monitor "PID文件不存在"
+        return 1
+    fi
+}
+
+# 启动策略
+start_strategy() {
+    log_monitor "正在启动策略..."
+    
+    # 使用虚拟环境Python
+    cd "$WORKDIR"
+    nohup .venv/bin/python "$STRATEGY_SCRIPT" > "$LOG_DIR/current_strategy.log" 2>&1 &
+    NEW_PID=$!
+    
+    echo "$NEW_PID" > "$STRATEGY_PID_FILE"
+    sleep 3
+    
+    # 检查是否启动成功
+    if ps -p "$NEW_PID" > /dev/null 2>&1; then
+        log_monitor "策略启动成功，PID: $NEW_PID"
+        return 0
+    else
+        log_monitor "策略启动失败，请检查日志"
+        return 1
+    fi
+}
+
+# 主循环
+log_monitor "=== 策略守护进程启动 ==="
+
+while true; do
+    if ! check_strategy; then
+        log_monitor "检测到策略停止，尝试重启..."
+        start_strategy
+        if [ $? -ne 0 ]; then
+            log_monitor "重启失败，等待30秒后重试"
+            sleep 30
+        fi
+    else
+        # 策略正常运行，等待1分钟再检查
+        sleep 60
+    fi
+done
