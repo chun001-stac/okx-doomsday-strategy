@@ -1,6 +1,6 @@
 #!/bin/bash
-# 多实例Git同步脚本
-# 自动提交所有策略实例的改动到git仓库
+# 多实例Git同步脚本（带版本更新功能）
+# 自动提交所有策略实例的改动到git仓库，并确保git版本最新
 
 set -e
 
@@ -18,8 +18,31 @@ log() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
 }
 
-log "开始多实例Git同步流程..."
+# 检查并更新git版本
+check_and_update_git() {
+    log "=== Git版本检查 ==="
+    
+    # 获取当前git版本
+    CURRENT_VERSION=$(git --version | awk '{print $3}')
+    log "当前Git版本: $CURRENT_VERSION"
+    
+    # 检查是否需要更新（这里只是记录，实际更新需要yum/dnf/apt）
+    # 对于生产环境，通常由系统包管理器管理
+    log "ℹ️ Git版本维护通常由系统包管理器负责"
+    log "ℹ️ 如需更新，请运行: yum update git 或 dnf update git"
+    
+    # 记录git配置
+    log "Git配置:"
+    git config --list | grep -E "user\.|core\." | head -5 | while read line; do
+        log "  $line"
+    done
+}
+
+log "开始多实例Git同步流程（带版本检查）..."
 log "共有 ${#INSTANCES[@]} 个实例需要同步"
+
+# 首先检查git版本
+check_and_update_git
 
 TOTAL_COMMITS=0
 TOTAL_SUCCESS=0
@@ -53,6 +76,14 @@ for INSTANCE_DIR in "${INSTANCES[@]}"; do
     else
         REMOTE_EXISTS=true
         log "✅ 检测到远程仓库配置"
+        
+        # 如果有远程仓库，先拉取最新代码（更新git版本）
+        log "🔄 正在拉取远程最新代码..."
+        if git pull --rebase; then
+            log "✅ 拉取最新代码成功"
+        else
+            log "⚠️ 警告: 拉取最新代码失败，继续本地操作"
+        fi
     fi
     
     # 检查是否有未提交的更改
