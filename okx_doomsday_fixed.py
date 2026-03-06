@@ -626,47 +626,13 @@ class FixedTradingSystem:
             self.logger.info("使用简单订单模式（后设置止损止盈）")
     
     def set_leverage(self):
-        """设置杠杆 - 修复版，添加marginMode参数"""
-        # 尝试多种参数格式，因为CCXT版本可能不同
-        methods = [
-            # 方法1: marginMode作为params字典
-            lambda: self.exchange.set_leverage(
-                self.config.leverage, 
-                self.config.symbol,
-                params={'marginMode': self.config.margin_mode}
-            ),
-            # 方法2: marginMode直接作为字典参数
-            lambda: self.exchange.set_leverage(
-                self.config.leverage, 
-                self.config.symbol,
-                {'marginMode': self.config.margin_mode}
-            ),
-            # 方法3: 使用关键字参数
-            lambda: self.exchange.set_leverage(
-                self.config.leverage, 
-                self.config.symbol,
-                marginMode=self.config.margin_mode
-            ),
-            # 方法4: 先设置交易模式，再设置杠杆
-            lambda: self.exchange.set_leverage(
-                self.config.leverage, 
-                self.config.symbol,
-                params={'tdMode': self.config.td_mode, 'marginMode': self.config.margin_mode}
-            ),
-        ]
-        
-        for i, method in enumerate(methods, 1):
-            try:
-                method()
-                self.logger.info(f"设置杠杆成功(方法{i}): {self.config.leverage}x, 保证金模式: {self.config.margin_mode}")
-                return
-            except Exception as e:
-                self.logger.debug(f"方法{i}失败: {e}")
-                continue
-        
-        # 所有方法都失败
-        self.logger.warning(f"设置杠杆失败，可能使用交易所默认杠杆设置")
-        self.logger.warning("建议手动在OKX账户中设置杠杆")
+        """设置杠杆 - 使用最简单的调用方式（测试表明基础调用就能工作）"""
+        try:
+            # 最简单的调用方式 - 测试表明这是有效的
+            self.exchange.set_leverage(self.config.leverage, self.config.symbol)
+            self.logger.info(f"设置杠杆成功: {self.config.leverage}x")
+        except Exception as e:
+            self.logger.warning(f"设置杠杆失败（可能已设置）: {e}")
     
     def fetch_sentiment_score(self) -> float:
         """
