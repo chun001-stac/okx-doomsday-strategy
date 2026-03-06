@@ -1,0 +1,41 @@
+[OKX]
+api_key = 1d9832a1-030e-49a9-90a7-29697d9c4980
+api_secret = 34A04573377BFBE85F2CE7F204AD4AC3
+api_password = Lqc1234567890@
+
+[Trading]
+symbol = ETH-USDT-SWAP 
+leverage = 10
+position_size_pct = 0.10  # 降低仓位，更安全
+max_daily_trades = 15     # 增加每日交易次数
+max_daily_loss_pct = 0.25
+max_total_loss_pct = 0.40
+
+[Strategy]
+timeframe = 5m
+momentum_period = 5
+# 降低动量阈值，更容易触发信号
+momentum_threshold_long = 0.005      # 从0.008降低到0.005
+momentum_threshold_short = -0.005    # 从-0.008调整到-0.005
+rsi_period = 7
+rsi_overbought = 75       # 放宽超买线
+rsi_oversold = 25         # 放宽超卖线
+short_bias = 0.75
+# 放宽过滤条件
+min_volume_ratio = 1.2    # 从1.5降低到1.2
+max_atr_pct = 0.05        # 从0.04增加到0.05，允许更高波动
+
+[Risk]
+# 收紧止损止盈，更保守
+stoploss_pct = 0.20       # 从0.25降低到0.20
+takeprofit_pct = 0.25     # 从0.30降低到0.25
+atr_stoploss_multiplier = 2.0  # 从2.5降低到2.0
+atr_takeprofit_multiplier = 2.5  # 从3.0降低到2.5
+trailing_stop_pct = 0.06  # 从0.08降低到0.06
+
+[System]
+vps_location = HongKong
+check_interval = 60
+enable_trading = true
+testnet = true
+enable_logging = true
