@@ -1,6 +1,6 @@
 #!/bin/bash
-# 多实例Git同步脚本（所有实例推送到GitHub）
-# 自动提交所有策略实例的改动到各自的分支
+# 多实例Git同步脚本（简化安全版本）
+# 自动提交所有策略实例的改动
 
 set -e
 
@@ -25,7 +25,7 @@ GITHUB_TOKEN="${GITHUB_TOKEN:-}"
 
 if [ -n "$GITHUB_TOKEN" ]; then
     GITHUB_URL="https://${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git"
-    log "✅ 检测到GitHub令牌，所有实例将推送到GitHub"
+    log "✅ 检测到GitHub令牌，将推送到远程仓库"
 else
     GITHUB_URL="https://github.com/${GITHUB_REPO}.git"
     log "⚠️ 未检测到GitHub令牌，仅进行本地提交"
@@ -102,7 +102,7 @@ setup_github_remote() {
     fi
 }
 
-log "开始多实例Git同步流程（所有实例推送到GitHub）..."
+log "开始多实例Git同步流程..."
 log "GitHub令牌状态: $([ -n "$GITHUB_TOKEN" ] && echo "已配置" || echo "未配置")"
 
 check_and_update_git
@@ -144,8 +144,7 @@ for INSTANCE_DIR in "${INSTANCES[@]}"; do
     
     # 提交更改
     git add -A
-    COMMIT_MSG="策略更新 $(date '+%Y-%m-%d %H:%M:%S') - $INSTANCE_NAME"
-    if git commit -m "$COMMIT_MSG"; then
+    if git commit -m "策略更新 $(date '+%Y-%m-%d %H:%M:%S') - $INSTANCE_NAME"; then
         log "✅ 已提交更改"
         TOTAL_COMMITS=$((TOTAL_COMMITS + 1))
         
@@ -154,35 +153,10 @@ for INSTANCE_DIR in "${INSTANCES[@]}"; do
             # 获取当前分支名
             CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo "main")
             
-            log "🔄 正在推送到GitHub (分支: $CURRENT_BRANCH)"
-            
-            # 尝试推送，如果失败则强制推送（避免历史冲突）
-            if git push origin "$CURRENT_BRANCH" 2>/dev/null; then
-                log "✅ GitHub推送成功 (分支: $CURRENT_BRANCH)"
-                TOTAL_SUCCESS=$((TOTAL_SUCCESS + 1))
-            else
-                log "⚠️ 首次推送失败，尝试强制推送..."
-                if git push --force-with-lease origin "$CURRENT_BRANCH" 2>/dev/null; then
-                    log "✅ GitHub强制推送成功 (分支: $CURRENT_BRANCH)"
-                    TOTAL_SUCCESS=$((TOTAL_SUCCESS + 1))
-                else
-                    log "❌ GitHub推送失败，但提交已保存到本地"
-                    log "ℹ️ 可能的原因：令牌权限不足、网络问题或分支冲突"
-                fi
-            fi
-        elif [ -z "$GITHUB_TOKEN" ]; then
-            log "ℹ️ 无GitHub令牌，提交仅保存到本地"
-        fi
-    else
-        log "❌ 提交失败"
+            log "🔄 正在推送到GitHub (分支: $C
     fi
 done
 
 log ""
 log "=== 同步完成 ==="
 log "总提交: $TOTAL_COMMITS, 成功推送: $TOTAL_SUCCESS"
-log "GitHub分支："
-log "  - main-eth: ETH实例"
-log "  - main-btc: BTC实例"  
-log "  - main-sol: SOL实例"
-log "  - main-doge: DOGE实例"
