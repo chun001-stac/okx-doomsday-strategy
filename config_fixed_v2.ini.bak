@@ -1,0 +1,48 @@
+[OKX]
+api_key = 1d9832a1-030e-49a9-90a7-29697d9c4980
+api_secret = 34A04573377BFBE85F2CE7F204AD4AC3
+api_password = Lqc1234567890@
+
+[Trading]
+symbol = ETH-USDT-SWAP
+leverage = 10
+margin_mode = cross  # 全仓模式，模拟账户通常是net_mode
+base_position_size_pct = 0.10
+max_position_size_pct = 0.20
+min_position_size_pct = 0.03
+atr_position_adjust = true
+max_daily_trades = 15
+max_daily_loss_pct = 0.25
+max_total_loss_pct = 0.40
+cooling_period_minutes = 5
+
+[Strategy]
+timeframe = 5m
+momentum_period = 5
+momentum_threshold_long = 0.005
+momentum_threshold_short = -0.005
+rsi_period = 7
+rsi_overbought = 75
+rsi_oversold = 25
+short_bias = 0.75
+min_volume_ratio = 1.2
+max_atr_pct = 0.05
+trend_confirmation_period = 3
+
+[Risk]
+base_stoploss_pct = 0.20
+base_takeprofit_pct = 0.25
+atr_stoploss_multiplier = 2.0
+atr_takeprofit_multiplier = 2.5
+trailing_stop_pct = 0.06
+
+[System]
+check_interval = 60
+enable_trading = true
+testnet = true
+enable_logging = true
+cache_indicators = true
+vps_location = HongKong
+# 新增参数
+td_mode = cross  # 交易模式: cross, isolated, cash
+use_simple_orders = true  # 使用简单订单，后设置止损止盈
