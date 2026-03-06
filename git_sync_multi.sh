@@ -9,6 +9,7 @@ INSTANCES=(
     "/root/.openclaw/workspace/freqtrade_workspace"      # ETH
     "/root/.openclaw/workspace/freqtrade_workspace_btc"  # BTC
     "/root/.openclaw/workspace/freqtrade_workspace_sol"  # SOL
+    "/root/.openclaw/workspace/freqtrade_workspace_okb"  # DOGE (原OKB，现改为DOGE)
 )
 
 LOG_FILE="/root/.openclaw/workspace/freqtrade_workspace/git_sync_multi.log"
